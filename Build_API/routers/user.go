@@ -6,9 +6,10 @@ import (
 	"github.com/gorilla/mux"
 )
 
-func Routers() *mux.Router{
+func Routers() *mux.Router {
 	router := mux.NewRouter()
-	router.HandleFunc("/api/banking/customer",controllers.InsertCustomerRecord)
+	router.HandleFunc("/api/customers", controllers.CreateCustomerRecord).Methods("POST")
+	router.HandleFunc("api/updateCus{id}",controllers.UpdatePassword)
 
 	return router
 }
