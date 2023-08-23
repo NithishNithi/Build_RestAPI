@@ -18,8 +18,9 @@ func Routers() *mux.Router {
 	router.HandleFunc("/customers/updatepassword/{id}", controllers.UpdatePassword).Methods("PUT")
 	router.HandleFunc("/customers/deletecustomer/{id}", controllers.DeleteCustomerRecord).Methods("DELETE") 
 
-// Transactions
+// Transactions ------>
+	router.HandleFunc("/transactions",controllers.Transaction)
 	router.HandleFunc("/transactions/createtransaction", controllers.CreateTransaction).Methods("POST")
-
+	router.HandleFunc("/transactions/updatetransactionamount/{id}",controllers.UpdateTransactionAmount)
 	return router
 }

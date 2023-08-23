@@ -6,7 +6,10 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+
+	"github.com/gorilla/mux"
 )
+
 
 func CreateTransaction(w http.ResponseWriter, r *http.Request){
 	var temp models.Transactions
@@ -20,6 +23,12 @@ func CreateTransaction(w http.ResponseWriter, r *http.Request){
 		services.CreateTransactionRecord(temp,Collection1)
 	}
 
+}
+
+func UpdateTransactionAmount(w http.ResponseWriter, r *http.Request){
+	params := mux.Vars(r)
+	services.UpdateTransactionAmount(params["id"], Collection1)
+	json.NewEncoder(w).Encode(params["id"])
 }
 
 

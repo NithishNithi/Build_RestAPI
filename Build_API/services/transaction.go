@@ -7,6 +7,7 @@ import (
 	"log"
 
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
@@ -31,4 +32,16 @@ func CreateTransactionRecord(record models.Transactions, Collection1 *mongo.Coll
 		log.Fatal(err)
 	}
 	fmt.Println("Inserted Customer_Record ---->",result.InsertedID)
+}
+var enteramount int = 98000
+func UpdateTransactionAmount(amountid string, Collection1 *mongo.Collection){
+	id,_:=primitive.ObjectIDFromHex(amountid)
+	filter := bson.M{"_id":id}
+	update:=bson.M{"$set":bson.M{"amount":enteramount}}
+	_,err:=Collection1.UpdateOne(context.Background(),filter,update)
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println("Transacction Amount Updated")
+
 }

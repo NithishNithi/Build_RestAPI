@@ -35,3 +35,7 @@ func Customers(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("<a href=http://localhost:4000/updatepassword><p1>Update_Password</p1></a><br>"))
 	w.Write([]byte("<a href=http://localhost:4000/deletecustomer><p1>Delete_Customer</p1></a><br>"))
 }
+
+func Transaction(w http.ResponseWriter, r *http.Request){
+	w.Write([]byte("<h1>Insert Customer Data in Postman</h1>"))
+}
