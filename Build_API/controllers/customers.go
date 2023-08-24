@@ -4,49 +4,45 @@ import (
 	"Build_API/models"
 	"Build_API/password"
 	"Build_API/services"
-	"encoding/json"
-	"log"
+	"github.com/gin-gonic/gin"
 	"net/http"
-
-	"github.com/gorilla/mux"
 )
 
 // func create customer record  --- CREATE
-func CreateCustomerRecord(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("<h1>Insert Customer Data in Postman</h1>"))
-	w.Header().Set("Content-Type", "application/json")
+func CreateCustomerRecord(c *gin.Context) {
+	c.String(http.StatusOK, "Inserted in Postman")
 	var temp models.Customers
-	_ = json.NewDecoder(r.Body).Decode(&temp)
-	hashedPassword, err := password.HashPassword(temp.Password)
+	if err := c.ShouldBindJSON(&temp); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	hashedPassword, err := password.HashPassword(temp.Password) // hashing the password before inserting into database
 	if err != nil {
-		log.Fatal(err)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
 	}
 	temp.Password = hashedPassword
+
 	services.CreateCustomerRecord(temp, Collection)
-	json.NewEncoder(w).Encode(temp)
+	c.JSON(http.StatusOK, temp)
 }
 
 // GET ALL RECORD ---- READ
-func GetAllCustomerRecord(w http.ResponseWriter, _ *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
-	allrecord := services.GetAllCustomerRecord(Collection)
-	json.NewEncoder(w).Encode(allrecord)
-
+func GetAllCustomerRecord(c *gin.Context) {
+	allRecord := services.GetAllCustomerRecord(Collection)
+	c.JSON(http.StatusOK, allRecord)
 }
 
-// update customer password ----- UPDATE
-func UpdateCustomerPassword(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("content-type", "application/json")
-	w.Header().Set("Allow-Control-Alow-Methods", "POST")
-	params := mux.Vars(r)
-	services.UpdateCustomerPassword(params["id"], Collection)
-	json.NewEncoder(w).Encode(params["id"])
+// UpdateCustomerPassword --- UPDATE
+func UpdateCustomerPassword(c *gin.Context) {
+	id := c.Param("id")
+	services.UpdateCustomerPassword(id, Collection)
+	c.JSON(http.StatusOK, gin.H{"message": "Password updated"})
 }
 
-// delete customer record ----- DELETE
-func DeleteCustomerRecord(w http.ResponseWriter, r *http.Request) {
-	params := mux.Vars(r)
-	services.DeleteCustomerRecord(params["id"], Collection)
-	json.NewEncoder(w).Encode(params["id"])
+// DeleteCustomerRecord --- DELETE
+func DeleteCustomerRecord(c *gin.Context) {
+	id := c.Param("id")
+	services.DeleteCustomerRecord(id, Collection)
+	c.JSON(http.StatusOK, gin.H{"message": "Customer record deleted"})
 }

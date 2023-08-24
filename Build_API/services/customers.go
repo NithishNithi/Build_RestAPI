@@ -12,9 +12,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-
-
-// func create customer record  --- CREATE
+// CreateCustomerRecord
 func CreateCustomerRecord(record models.Customers, collection *mongo.Collection) {
 	_, err := collection.InsertOne(context.Background(), &record)
 	if err != nil {
@@ -23,7 +21,7 @@ func CreateCustomerRecord(record models.Customers, collection *mongo.Collection)
 	fmt.Println("Inserted Customer_Record")
 }
 
-// GET ALL RECORD ---- READ
+// GetAllCustomerRecord
 func GetAllCustomerRecord(Collection *mongo.Collection) []primitive.M {
 	cur, err := Collection.Find(context.Background(), bson.D{{}})
 	if err != nil {
@@ -43,8 +41,9 @@ func GetAllCustomerRecord(Collection *mongo.Collection) []primitive.M {
 	return cus_rec
 }
 
-// Update customer password ----- UPDATE
-var enterPass string  = "passkey102"
+// UpdateCustomerPassword
+var enterPass string = "passkey102"
+
 func UpdateCustomerPassword(Pass string, Collection *mongo.Collection) {
 	id, _ := primitive.ObjectIDFromHex(Pass)
 	hashedPassword, _ := password.HashPassword(enterPass)
@@ -58,7 +57,7 @@ func UpdateCustomerPassword(Pass string, Collection *mongo.Collection) {
 	fmt.Println("Modified count", result.ModifiedCount)
 }
 
-// Delete customer record ----- Delete
+// DeleteCustomerRecord
 func DeleteCustomerRecord(del string, Collection *mongo.Collection) {
 	id, _ := primitive.ObjectIDFromHex(del)
 	filter := bson.M{"_id": id}

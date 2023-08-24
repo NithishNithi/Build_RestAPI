@@ -4,3 +4,4 @@ const ConnectionString = "mongodb+srv://mrnithisht:mrnithisht@banking.taaq05t.mo
 const DBName = "Banking"
 const Collection_name = "Customers"
 const Transaction_CollectionName = "Transactions"
+const Loans_CollectionName = "Loans"

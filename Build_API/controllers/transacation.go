@@ -3,32 +3,76 @@ package controllers
 import (
 	"Build_API/models"
 	"Build_API/services"
-	"encoding/json"
 	"fmt"
-	"net/http"
 
-	"github.com/gorilla/mux"
+	// "fmt"
+	"net/http"
+	"time"
+
+	"github.com/gin-gonic/gin"
 )
 
-
-func CreateTransaction(_ http.ResponseWriter, r *http.Request){
+// CreateTransaction --- CREATE
+func CreateTransaction(c *gin.Context) {
 	var temp models.Transactions
-	_ = json.NewDecoder(r.Body).Decode(&temp)
-	cusID:=temp.Customer_Id
-	check:=services.Check_Id(cusID,Collection)
-
-	if !check {
-		fmt.Println("Create Customer Record to Create Transaction")
-	} else {
-		services.CreateTransactionRecord(temp,Collection1)
+	if err := c.ShouldBindJSON(&temp); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
 	}
 
+	cusID := temp.Customer_Id
+	check := services.Transaction_Check_Id(cusID, Collection)
+
+	temp.Transaction_Time = time.Now()
+	if !check {
+		c.JSON(http.StatusBadRequest, gin.H{"message": "Create Customer Record to Create Transaction"})
+	} else {
+		services.CreateTransactionRecord(temp, Collection1)
+		c.JSON(http.StatusOK, gin.H{"message": "Transaction created"})
+	}
 }
 
-func UpdateTransactionAmount(w http.ResponseWriter, r *http.Request){
-	params := mux.Vars(r)
-	services.UpdateTransactionAmount(params["id"], Collection1)
-	json.NewEncoder(w).Encode(params["id"])
+// UpdateTransactionAmount --- UPDATE
+func UpdateTransactionAmount(c *gin.Context) {
+	id := c.Param("id")
+	services.UpdateTransactionAmount(id, Collection1)
+	c.JSON(http.StatusOK, gin.H{"message": "Transaction amount updated"})
 }
 
+// GetAllTransaction -- READ
 
+func GetAllTransaction(c *gin.Context) {
+	allRecord := services.GetAllTransactionRecord(Collection1)
+	c.JSON(http.StatusOK, allRecord)
+}
+
+//
+
+func GetTransactionsByTimeRange(c *gin.Context) {
+
+	var req struct {
+		Fr string `json:"start_time" binding:"required"`
+		To string `json:"end_time" binding:"required"`
+	}
+	if err := c.ShouldBindJSON(&req); err != nil {
+		fmt.Println("Bind error")
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	fmt.Println(req.Fr, req.To)
+
+	starttime, err := time.Parse("2006-01-02", req.Fr)
+	fmt.Println(req.Fr)
+	if err != nil {
+		fmt.Println("err")
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid start_time format"})
+		return
+	}
+	endtime, err := time.Parse("2006-01-02", req.To)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid start_time format"})
+		return
+	}
+	transactions, _ := services.GetTransactionsByTimeRange(starttime, endtime, Collection1)
+	c.JSON(http.StatusOK, transactions)
+}
