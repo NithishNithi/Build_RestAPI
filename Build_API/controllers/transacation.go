@@ -74,5 +74,39 @@ func GetTransactionsByTimeRange(c *gin.Context) {
 		return
 	}
 	transactions, _ := services.GetTransactionsByTimeRange(starttime, endtime, Collection1)
-	c.JSON(http.StatusOK, transactions)
+
+	c.JSON(http.StatusOK,transactions,)
 }
+
+// GetTransactionsSumByTimeRange
+
+func GetTransactionsSumByTimeRange(c *gin.Context){
+	var reqsum struct {
+		Fr string `json:"start_time" binding:"required"`
+		To string `json:"end_time" binding:"required"`
+	}
+	if err := c.ShouldBindJSON(&reqsum); err != nil {
+		fmt.Println("Bind error")
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	fmt.Println(reqsum.Fr, reqsum.To)
+
+	starttime, err := time.Parse("2006-01-02", reqsum.Fr)
+	fmt.Println(reqsum.Fr)
+	if err != nil {
+		fmt.Println("err")
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid start_time format"})
+		return
+	}
+	endtime, err := time.Parse("2006-01-02", reqsum.To)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid start_time format"})
+		return
+	}
+	totalamount,_ := services.GetTransactionsSumByTimeRange(starttime, endtime, Collection1)
+	fmt.Println("Total Amount in Given Time Range:",totalamount)
+	c.JSON(http.StatusOK,totalamount)
+}
+
+

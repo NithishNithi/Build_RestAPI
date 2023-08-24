@@ -73,7 +73,7 @@ func GetAllTransactionRecord(Collection1 *mongo.Collection) []primitive.M {
 func GetTransactionsByTimeRange(startTime, endTime time.Time, Collection1 *mongo.Collection) ([]*models.Transactions, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
 	defer cancel()
-
+	
 	filter := bson.M{
 		"transaction_time": bson.M{
 			"$gte": startTime,
@@ -84,10 +84,10 @@ func GetTransactionsByTimeRange(startTime, endTime time.Time, Collection1 *mongo
 	options := options.Find()
 	cur, err := Collection1.Find(ctx, filter, options)
 	if err != nil {
-		return nil, err
+		return nil,err
 	}
 	defer cur.Close(ctx) // Close the cursor when done
-
+	
 	var transactions []*models.Transactions
 	for cur.Next(ctx) {
 		transaction := &models.Transactions{}
@@ -103,3 +103,45 @@ func GetTransactionsByTimeRange(startTime, endTime time.Time, Collection1 *mongo
 
 	return transactions, nil
 }
+func GetTransactionsSumByTimeRange(startTime, endTime time.Time, Collection1 *mongo.Collection) (float64, error) {
+    ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
+    defer cancel()
+
+    pipeline := []bson.M{
+        {
+            "$match": bson.M{
+                "transaction_time": bson.M{
+                    "$gte": startTime,
+                    "$lte": endTime,
+                },
+            },
+        },
+        {
+            "$group": bson.M{
+                "_id":   nil,
+                "totalAmount": bson.M{
+                    "$sum": "$amount", // Assuming the transaction amount field is named "amount"
+                },
+            },
+        },
+    }
+
+    cur, err := Collection1.Aggregate(ctx, pipeline)
+    if err != nil {
+        return 0, err
+    }
+    defer cur.Close(ctx)
+
+    var result struct {
+        TotalAmount float64 `bson:"totalAmount"`
+    }
+
+    if cur.Next(ctx) {
+        if err := cur.Decode(&result); err != nil {
+            return 0, err
+        }
+    }
+
+    return result.TotalAmount, nil
+}
+

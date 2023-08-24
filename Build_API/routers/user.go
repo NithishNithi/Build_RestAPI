@@ -38,6 +38,7 @@ func SetUpRouters(r *gin.Engine){
 	r.PUT("/transactions/update/:id", controllers.UpdateTransactionAmount)
 	r.GET("/transactions/getall",controllers.GetAllTransaction)
 	r.POST("/transactions/timerange", controllers.GetTransactionsByTimeRange)
+	r.POST("/transactions/sumbytimerange", controllers.GetTransactionsSumByTimeRange)
 
 	// Loans ------>
 	r.POST("/loans/create", controllers.CreateLoanRecord)
