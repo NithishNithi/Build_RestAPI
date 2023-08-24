@@ -36,7 +36,7 @@ func GetAllCustomerRecord(w http.ResponseWriter, _ *http.Request) {
 }
 
 // update customer password ----- UPDATE
-func UpdatePassword(w http.ResponseWriter, r *http.Request) {
+func UpdateCustomerPassword(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("content-type", "application/json")
 	w.Header().Set("Allow-Control-Alow-Methods", "POST")
 	params := mux.Vars(r)

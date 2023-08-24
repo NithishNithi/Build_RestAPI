@@ -15,7 +15,7 @@ func Routers() *mux.Router {
 	router.HandleFunc("/customers",controllers.Customers)
 	router.HandleFunc("/customers/createcustomer", controllers.CreateCustomerRecord).Methods("POST")
 	router.HandleFunc("/customers/getallrecord", controllers.GetAllCustomerRecord).Methods("GET") 
-	router.HandleFunc("/customers/updatepassword/{id}", controllers.UpdatePassword).Methods("PUT")
+	router.HandleFunc("/customers/updatepassword/{id}", controllers.UpdateCustomerPassword).Methods("PUT")
 	router.HandleFunc("/customers/deletecustomer/{id}", controllers.DeleteCustomerRecord).Methods("DELETE") 
 
 // Transactions ------>

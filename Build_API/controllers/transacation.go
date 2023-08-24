@@ -11,7 +11,7 @@ import (
 )
 
 
-func CreateTransaction(w http.ResponseWriter, r *http.Request){
+func CreateTransaction(_ http.ResponseWriter, r *http.Request){
 	var temp models.Transactions
 	_ = json.NewDecoder(r.Body).Decode(&temp)
 	cusID:=temp.Customer_Id

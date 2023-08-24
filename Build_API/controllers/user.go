@@ -28,7 +28,7 @@ func init() {
 	fmt.Println("Collection Instance Ready")
 }
 
-func Customers(w http.ResponseWriter, r *http.Request) {
+func Customers(w http.ResponseWriter, _ *http.Request) {
 	w.Write([]byte("<h1 style>welcome to the Bank</h1>"))
 	w.Write([]byte("<a href=http://localhost:4000/createcustomer><p1>Create_Customer</p1></a><br>"))
 	w.Write([]byte("<a href=http://localhost:4000/getallrecord><p1>Get_All_Customer_Record</p1></a><br>"))
@@ -36,6 +36,6 @@ func Customers(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("<a href=http://localhost:4000/deletecustomer><p1>Delete_Customer</p1></a><br>"))
 }
 
-func Transaction(w http.ResponseWriter, r *http.Request){
+func Transaction(w http.ResponseWriter, _ *http.Request){
 	w.Write([]byte("<h1>Insert Customer Data in Postman</h1>"))
 }
