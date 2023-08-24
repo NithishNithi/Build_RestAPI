@@ -5,13 +5,11 @@ import (
 	"context"
 	"fmt"
 	"log"
-	// "net/http"
-
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-var Collection,Collection1,Collection2 *mongo.Collection
+var Collection, Collection1, Collection2 *mongo.Collection
 
 func init() {
 	// client option

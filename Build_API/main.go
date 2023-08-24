@@ -14,8 +14,9 @@ func main() {
 	fmt.Println("Server gets started")
 	r := gin.Default() //Create Gin router Instance
 	routers.SetUpRouters(r)
-	fmt.Println("Listening and serving on Port:4000")
-	err := http.ListenAndServe(":4002", r)
+	port:=":4002"
+	fmt.Println("Listening and serving on Port",port)
+	err := http.ListenAndServe(port, r)
 	if err != nil {
 		log.Println("Error:", err)
 	}
