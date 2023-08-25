@@ -45,4 +45,7 @@ func SetUpRouters(r *gin.Engine){
 	r.PUT("/loans/update/:id", controllers.UpdateLoanRecord)
 	r.GET("/loans/getall", controllers.GetAllLoanRecord)
 	r.DELETE("/loans/update/:id", controllers.DeleteLoanRecord)
+
+	// make transaction
+	r.POST("/maketransaction/1", controllers.MakeTransaction)
 }
