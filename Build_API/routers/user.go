@@ -25,18 +25,18 @@ import (
 // 	return router
 // }
 
-func SetUpRouters(r *gin.Engine){
-	
+func SetUpRouters(r *gin.Engine) {
+
 	r.POST("/customers/create", controllers.CreateCustomerRecord)
 	r.GET("/customers/getall", controllers.GetAllCustomerRecord)
 	r.PUT("/customers/update/:id", controllers.UpdateCustomerPassword)
 	r.DELETE("/customers/delete/:id", controllers.DeleteCustomerRecord)
 
 	// Transactions ------>
-	
+
 	r.POST("/transactions/create", controllers.CreateTransaction)
 	r.PUT("/transactions/update/:id", controllers.UpdateTransactionAmount)
-	r.GET("/transactions/getall",controllers.GetAllTransaction)
+	r.GET("/transactions/getall", controllers.GetAllTransaction)
 	r.POST("/transactions/timerange", controllers.GetTransactionsByTimeRange)
 	r.POST("/transactions/sumbytimerange", controllers.GetTransactionsSumByTimeRange)
 

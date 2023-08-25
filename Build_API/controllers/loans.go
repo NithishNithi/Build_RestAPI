@@ -1,11 +1,11 @@
 package controllers
 
-
 import (
 	"Build_API/models"
 	"Build_API/services"
-	"github.com/gin-gonic/gin"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
 // func create customer record  --- CREATE

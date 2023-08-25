@@ -5,11 +5,12 @@ import (
 	"context"
 	"fmt"
 	"log"
+
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-var Collection, Collection1, Collection2 ,Collection3*mongo.Collection
+var Collection, Collection1, Collection2, Collection3 *mongo.Collection
 
 func init() {
 	// client option
@@ -27,4 +28,3 @@ func init() {
 	Collection3 = client.Database(userinput.DBName).Collection(userinput.MakeTransaction)
 	fmt.Println("Collection Instance Ready")
 }
-

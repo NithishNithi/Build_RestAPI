@@ -33,6 +33,7 @@ func CreateLoanRecord(record models.Loans, Collection1 *mongo.Collection) {
 
 // Update Loan Amount
 var enter_Loan_amount int = 4000
+
 func UpdateLoanAmount(amountid string, Collection2 *mongo.Collection) {
 	id, _ := primitive.ObjectIDFromHex(amountid)
 	filter := bson.M{"_id": id}
@@ -45,7 +46,7 @@ func UpdateLoanAmount(amountid string, Collection2 *mongo.Collection) {
 	fmt.Println("Loan Amount Updated")
 }
 
-// Get All Update Record 
+// Get All Update Record
 
 func GetAllLoanRecord(Collection2 *mongo.Collection) []primitive.M {
 	cur, err := Collection2.Find(context.Background(), bson.D{{}})
