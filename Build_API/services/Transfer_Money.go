@@ -5,6 +5,7 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"time"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -74,6 +75,8 @@ func TransferMoney(from int, to int, amount int, Collection *mongo.Collection, C
 	transactionRecord.From_Id = from
 	transactionRecord.To_Id = to
 	transactionRecord.Amount = amount
+	theTime := time.Now()
+	transactionRecord.Time = theTime.Format("2006-1-2 15:4:5")
 	_, transErr := Collection3.InsertOne(context.Background(), transactionRecord)
 	if transErr != nil {
 		fmt.Println("Error while inserting into transactions Table", transErr)
